@@ -29,4 +29,4 @@ RUN ln -sf  /usr/share/zoneinfo/Asia/Tokyo /etc/localtime
 
 EXPOSE 8080
 
-CMD java -jar -Dspring.profiles.active=$ENV_TYPE /usr/local/sample-spring-security/sample-user/target/sample-spring-security-backend-user-0.0.1-SNAPSHOT.jar
+CMD $JAVA_HOME/bin/java -jar -Dspring.profiles.active=$ENV_TYPE /usr/local/sample-spring-security/backend-user/target/sample-spring-security-backend-user-0.0.1-SNAPSHOT.jar
