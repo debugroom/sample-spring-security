@@ -1,5 +1,6 @@
 package org.debugroom.sample.spring.security.chat.app.web;
 
+import org.debugroom.sample.spring.security.chat.app.model.portal.PortalInformation;
 import org.debugroom.sample.spring.security.chat.app.web.security.CustomUserDetails;
 import org.debugroom.sample.spring.security.chat.domain.service.portal.PortalOrchestrationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,9 +27,11 @@ public class FrontendAppPortalController {
     @GetMapping(value= "/portal")
     public String portal(@AuthenticationPrincipal CustomUserDetails customUserDetails,
                          Model model, HttpSession httpSession){
-        model.addAttribute("portalInformation",
-                portalOrchestrationService.getPortalInformation(
-                        customUserDetails.getUserResource().getUserId()));
+        model.addAttribute("portalInformation", PortalInformation.builder()
+                .userResource(portalOrchestrationService
+                        .getUserResource(customUserDetails
+                                .getUserResource()
+                                .getUserId())));
         String sessionId = httpSession.getId();
         model.addAttribute("sessionId", sessionId);
         return "portal";

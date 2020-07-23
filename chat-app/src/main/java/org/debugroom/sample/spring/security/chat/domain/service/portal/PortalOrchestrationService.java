@@ -1,9 +1,9 @@
 package org.debugroom.sample.spring.security.chat.domain.service.portal;
 
-import org.debugroom.sample.spring.security.chat.app.model.portal.PortalInformation;
+import org.debugroom.sample.spring.security.common.model.user.UserResource;
 
 public interface PortalOrchestrationService {
 
-    public PortalInformation getPortalInformation(String userId);
+    public UserResource getUserResource(String userId);
 
 }

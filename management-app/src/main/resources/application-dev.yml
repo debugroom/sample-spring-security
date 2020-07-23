@@ -8,3 +8,17 @@ cloud:
     region:
       auto: false
       static: ap-northeast-1
+cognito:
+  oauth2:
+    redirect-uri: http://localhost:8080/login/oauth2/code/cognito
+    jwk-set-uri: https://cognito-idp.ap-northeast-1.amazonaws.com
+    ssm:
+      app:
+        client:
+          id: sample-spring-security-cognito-custom-app-client-id
+          secret: sample-spring-security-cognito-custom-app-client-secret
+      domain: sample-spring-security-cognito-custom-domain
+      user-pool-id: sample-spring-security-cognito-custom-user-pool-id
+service:
+  user:
+    dns: http://localhost:8081

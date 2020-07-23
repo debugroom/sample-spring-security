@@ -8,5 +8,10 @@ cloud:
     region:
       auto: false
       static: ap-northeast-1
+cognito:
+  oauth2:
+    jwk-set-uri: https://cognito-idp.ap-northeast-1.amazonaws.com
+    ssm:
+      user-pool-id: sample-spring-security-cognito-custom-user-pool-id
 server:
   port: 8081

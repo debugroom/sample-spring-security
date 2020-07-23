@@ -19,23 +19,23 @@ import java.util.Map;
 @Configuration
 public class CognitoOAuth2LoginConfig {
 
-    private static final String REDIRECT_URI_TEMPLATE
-            = "http://localhost:8080/login/oauth2/code/cognito";
+    @Value("${cognito.oauth2.redirect-uri}")
+    private String redirectUriTemplate;
 
-    private static final String JWK_SET_URI_DOMAIN
-            = "https://cognito-idp.ap-northeast-1.amazonaws.com";
+    @Value("${cognito.oauth2.jwk-set-uri}")
+    private String jwkSetUri;
 
-    private static final String APP_CLIENT_ID
-            = "sample-spring-security-cognito-custom-app-client-id";
+    @Value("${cognito.oauth2.ssm.app.client.id}")
+    private String appClientIdParamName;
 
-    private static final String APP_CLIENT_SECRET
-            = "sample-spring-security-cognito-custom-app-client-secret";
+    @Value("${cognito.oauth2.ssm.app.client.secret}")
+    private String appClientSecretParamName;
 
-    private static final String DOMAIN
-            = "sample-spring-security-cognito-custom-domain";
+    @Value("${cognito.oauth2.ssm.domain}")
+    private String domainParamName;
 
-    private static final String USER_POOL_ID
-            = "sample-spring-security-cognito-custom-user-pool-id";
+    @Value("${cognito.oauth2.ssm.user-pool-id}")
+    private String userPoolIdParamName;
 
     @Value("${cloud.aws.region.static}")
     private String region;
@@ -51,10 +51,10 @@ public class CognitoOAuth2LoginConfig {
     }
 
     private ClientRegistration cognitoClientRegistration(){
-        String clientId = getParameterFromParameterStore(APP_CLIENT_ID, true);
-        String clientSecret = getParameterFromParameterStore(APP_CLIENT_SECRET, true);
-        String domain = getParameterFromParameterStore(DOMAIN, false);
-        String userPoolId = getParameterFromParameterStore(USER_POOL_ID, true);
+        String clientId = getParameterFromParameterStore(appClientIdParamName, true);
+        String clientSecret = getParameterFromParameterStore(appClientSecretParamName, true);
+        String domain = getParameterFromParameterStore(domainParamName, false);
+        String userPoolId = getParameterFromParameterStore(userPoolIdParamName, true);
         Map<String, Object> configurationMetadata = new HashMap<>();
         configurationMetadata.put("end_session_endpoint", domain + "/logout");
         return ClientRegistration.withRegistrationId("cognito")
@@ -62,13 +62,13 @@ public class CognitoOAuth2LoginConfig {
                 .clientSecret(clientSecret)
                 .clientAuthenticationMethod(ClientAuthenticationMethod.BASIC)
                 .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
-                .redirectUriTemplate(REDIRECT_URI_TEMPLATE)
+                .redirectUriTemplate(redirectUriTemplate)
                 .scope("openid", "profile")
                 .tokenUri(domain + "/oauth2/token")
                 .authorizationUri(domain + "/oauth2/authorize")
                 .userInfoUri(domain + "/oauth2/userInfo")
                 .userNameAttributeName("cognito:username")
-                .jwkSetUri(JWK_SET_URI_DOMAIN + "/" + userPoolId + "/.well-known/jwks.json")
+                .jwkSetUri(jwkSetUri + "/" + userPoolId + "/.well-known/jwks.json")
                 .clientName("Cognito")
                 .providerConfigurationMetadata(configurationMetadata)
                 .build();

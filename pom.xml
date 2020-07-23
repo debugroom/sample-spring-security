@@ -10,6 +10,7 @@
   <version>1.0-SNAPSHOT</version>
 
   <modules>
+    <module>management-app</module>
     <module>chat-app</module>
     <module>backend-user</module>
     <module>backend-message</module>
